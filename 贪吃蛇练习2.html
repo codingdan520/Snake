@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .map {
+            width: 600px;
+            height: 400px;
+            background: skyblue;
+            position: relative;
+        }
+    </style>
+
+</head>
+<body>
+<div class="map"></div>
+<script>
+    // 产生随机数
+    (function (window) {
+        function Random() {
+
+        }
+
+        Random.prototype.getRandom = function (min, max) {
+            return Math.floor(Math.random() * (max - min) + min);
+        }
+        window.Random = new Random();
+    })(window);
+
+    //产生小方块对象
+    (function (window) {
+        var map = document.querySelector(".map");//获得地图对象
+
+        // 定义小方块构造函数
+        function Food(width, height, color) {
+            this.width = width || 20;//默认小方块大小为20宽
+            this.height = height || 20;//默认小方块大小为20高
+            this.color = color || 'red';//默认小方块为红色
+            this.x = 0;
+            this.y = 0;
+            this.element = document.createElement('div');
+
+        }
+
+        // 初始化小方块
+        Food.prototype.init = function (map) {
+            var div = this.element; //获得小方块对象
+            div.style.position = 'absolute';
+            div.style.width = this.width + 'px';
+            div.style.height = this.height + 'px';
+            div.style.background = this.color;
+            map.appendChild(div);
+            this.render(map);
+        }
+
+        //给小方块指定位置
+        Food.prototype.render = function (map) {
+            var x = Random.getRandom(0, map.offsetWidth / this.width) * this.width;
+            var y = Random.getRandom(0, map.offsetHeight / this.height) * this.height;
+            this.x = x;
+            this.y = y;
+            var div = this.element;//获得小方块对象
+            div.style.left = this.x + 'px';
+            div.style.top = this.y + 'px';
+        }
+
+
+        var fd = new Food(20, 20, 'green');
+        fd.init(map);
+
+    })(window);
+
+</script>
+</body>
+</html>

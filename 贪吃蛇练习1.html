@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>贪吃蛇游戏</title>
+    <link rel="icon" href="favicon.ico" text="text/short-icon">
+    <style>
+        .map {
+            width: 800px;
+            height: 600px;
+            background: #cccccc;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+<div class="map"></div>
+<script src="common.js"></script>  <!--提升系统运行性能-->
+<script>
+    // 产生随机数对象
+    (function (window) {
+        function Random() {
+        }
+
+        Random.prototype.getRandom = function (min, max) {
+            return Math.floor(Math.random() * (max - min) + min);
+        }
+        // 把局部对象暴露给全局
+        window.Random = new Random();
+    })(window);
+
+    // 产生小方块对象
+    (function (window) {
+        // 选择器方式来获取元素对象
+        var map = document.getElementsByClassName("map")[0];
+
+        /*function ditu(width, height, color, map) {// 为背景设置样式
+            this.map = map;
+            this.width = width + 'px';
+            this.height = height + "px";
+            this.color = color;
+            this.map.style.width = this.width;
+            this.map.style.height = this.height;
+            this, map.style.color = this.color;
+        }*/
+
+        // 小方块的构造器
+        function Food(width, height, color) {
+            this.width = width || 20;//默认小方块宽度
+            this.height = height || 20;//默认小方块高度
+            //横坐标，纵坐标
+            this.x = 0;//默认在0坐标
+            this.y = 0;
+            this.color = color || 'black';// 小方块的背景颜色
+            this.element = document.createElement('div');//小方块元素
+        };
+
+        // 初始化小方块显示的效果及位置
+        Food.prototype.init = function (map) {
+            //设置小方块的样式
+            var div = this.element;
+            div.style.position = "absolute";
+            div.style.width = this.width + "px";
+            // div.style={"height":"this.height+'px'","color":"this.color"};
+            div.style.height = this.height + "px";
+            div.style.background = this.color;
+            // div.style.borderRadius='50%'; // 给小方块定义形状为圆形
+            map.appendChild(div);
+            this.render(map);
+        };
+
+        // 在地图上产生随机位置
+        Food.prototype.render = function (map) {
+            //随机产生横纵坐标
+            var x = Random.getRandom(0, map.offsetWidth / this.width) * this.width;
+            var y = Random.getRandom(0, map.offsetHeight / this.height) * this.height;
+            this.x = x;
+            this.y = y;
+            var div = this.element;
+            div.style.left = this.x + "px";
+            div.style.top = this.y + "px";
+        };
+
+        //实例化对象，定义地图的大小及背景
+        // var kuan=prompt("请输入背景宽度");
+        // var gao=prompt("请输入背景高度");
+        // var dt=new ditu(kuan,gao,'#ccc',map);
+
+        //实例化对象，定义小方块的大小及颜色
+        var fd = new Food(20, 20, 'green');
+        fd.init(map);
+
+
+    })(window);
+
+
+</script>
+
+</body>
+</html>
